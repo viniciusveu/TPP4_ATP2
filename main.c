@@ -32,62 +32,130 @@ FILE *f1, *f2, *ff;
 //MAIN======================================================================================================================================================
 
 int main(int argc, char *argv[]) {
-    char arq1[TAM], arq2[TAM], arq3[TAM], ch;
-    int cont, val;
-    time_t t;
+    char ch, t='t', b='b';
+    int cont, val, i, j, n, n1, n2;
+    time_t tim;
     setlocale(LC_ALL, "Portuguese");
     switch(argc) {
-        case 0:
-            printf("Erro nos parâmetros de entrada!"); 
-            break;
+        
         case 1: //TPP4
             comoUsar();
-            break;
-        case 2: //TPP4 t arq1
-            if(argv[1] == "t") {
-                if( (f1=fopen(argv[2], "r") ) != NULL) {
-                    printf("ERRO na abertura do arquivo %s!!!", argv[2]);
+        break;
+        
+        case 3: //TPP4 t arq1
+            if(*argv[1] == t) {
+                if( (f1=fopen(argv[2], "r") ) == NULL) {
+                    printf("ERRO na abertura do arquivo %s!!! O arquivo está criado? \n", argv[2]);
                     exit(1);
                 }
-                while ( ch = fgetc(f1) != EOF) {
-                    if(ch == '\n') PULA;
-                    else printf("%c ", ch);
+                while (1) {
+                    ch = fgetc(f1);
+                    n = atoi(ch);
+                    if(feof(f1)) break;
+                    if(i == '\n') PULA;
+                    else printf("%d ", i);
                 }
-                if( fclose(f1) != 0 )   
-                    printf("ERRO ao fechar o arquivo %s!!!", argv[2]);
+                fclose(f1);
+                //if( fclose(f1) != 0 )   
+                //    printf("ERRO ao fechar o arquivo %s!!!\n", argv[2]);
             }
-            else if(argv[1] == "b") {
-
-            }
-            else printf("Erro! Entre com o argumento t se o arquivo for do tipo texto, e b se for do tipo binário.");
-            break;
-        case 3: //TPP4 t arq1 n
-            if(argv[1] == "t") {
-                if( (f1=fopen(argv[2], "w") ) != NULL) {
-                    printf("ERRO na abertura do arquivo %s!!!", argv[2]);
+            else if(*argv[1] == b) {
+                if( (f1=fopen(argv[2], "rb") ) == NULL) {
+                    printf("ERRO na abertura do arquivo %s!!! O arquivo está criado? \n", argv[2]);
                     exit(1);
                 }
-                srand((unsigned) time(&t));
-                for(cont=1; cont <= *argv[3]; cont++)
-                    val = rand()%1000;
-                    fputc(val, f1);
-                if( fclose(f1) != 0 )   
-                    printf("ERRO ao fechar o arquivo %s!!!", argv[2]);
             }
-            else if(argv[1] == "b") {
-
+            else printf("Erro! Entre com o argumento t se o arquivo for do tipo texto, e b se for do tipo binário.\n");
+        break;
+        
+        case 4: //TPP4 t arq1 n
+            if(*argv[1] == t) {
+                if( (f1=fopen(argv[2], "w+") ) == NULL) {
+                    printf("ERRO na abertura do arquivo %s!!!\n", argv[2]);
+                    exit(1);
+                }
+                //srand((unsigned) time(&tim));
+                printf("Entre com os valores do arquivo: \n");
+                for(cont=1; cont <= *argv[3]; cont++) {
+                    //fputc(rand(), f1);
+                    scanf("%c", &ch);
+                    fputc(ch, f1);
+                }
+                printf("Arquivo criado com sucesso!!!");
+                fclose(f1);
             }
-            else printf("Erro! Entre com o argumento t se o arquivo for do tipo texto, e b se for do tipo binário.");
-            break;
+            else if(*argv[1] == b) {
+                if( (f1=fopen(argv[2], "rb") ) == NULL) {
+                    printf("ERRO na abertura do arquivo %s!!! O arquivo está criado? \n", argv[2]);
+                    exit(1);
+                }
+            }
+            else printf("Erro! Entre com o argumento t se o arquivo for do tipo texto, e b se for do tipo binário.\n");
+        break;
 
+        case 6: //Casos de 1 a 3
+            switch(*argv[2]) {
+                case 1: //Cria o arquivo TEXTO/BINARIO com nome arq3 que é o resultado da intersecção dos elementos dos arquivos BINARIOS arq1 e arq2
+                    if(*argv[1] == t) {
+                        if(*argv[2] == 1) {
+                            if( (f1=fopen(argv[3], "r") ) == NULL) {
+                                printf("ERRO na abertura do arquivo %s!!! O arquivo está criado? \n", argv[3]);
+                                exit(1);
+                            }
+                            if( (f2=fopen(argv[4], "r") ) == NULL) {
+                                printf("ERRO na abertura do arquivo %s!!! O arquivo está criado? \n", argv[4]);
+                                exit(1);
+                            }
+                            if( (ff=fopen(argv[5], "w+") ) == NULL) {
+                                printf("ERRO na abertura do arquivo %s!!! O arquivo está criado? \n", argv[5]);
+                                exit(1);
+                            }
+
+                            for(i=0; i != EOF; i++) {
+                                n1 = fgetc(f1);
+                                for(j=0; j != EOF; j++){
+                                    if(n1 == fgetc(f2)) fputc(n1, ff);
+                                }
+                            }
+
+                            fclose(f1);
+                            fclose(f2);
+                            fclose(ff);
+                        }
+                        if(*argv[2] == 2) {
+
+                        }
+                        if(*argv[2] == 3) {
+
+                        }
+                        else printf("Entre com a opção 1, 2 ou 3!\n");
+                    }
+                    else if(*argv[1] == b) {
+
+                    }
+                    else printf("Erro! Entre com o argumento t se o arquivo for do tipo texto, e b se for do tipo binário.\n");
+                break;
+                
+                case 2: //Cria o arquivo TEXTO com nome arq3 que é resultado da união dos elementos dos arquivos TEXTOS arq1 e arq2
+
+                break; 
+
+                case 3: //Cria o arquivo TEXTO com nome arq3 que é resultado da diferença dos elementos do arquivo TEXTO arq1, menos os elementos do arquivo TEXTO arq2
+
+                break;
+
+                default:
+                    printf("Entre com as opções 1, 2 ou 3! '-' \n");
+                break;
+            } //Swith
         default: 
-            printf("ERRO! :(");
-            break;
+            printf("ERRO! :(\n");
+        break;
     }
 
     
     puts("\n\n");
-    //system("PAUSE");
+    system("PAUSE");
     return 0;
 }
 
