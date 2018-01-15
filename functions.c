@@ -8,9 +8,6 @@
 /*Lista na tela uma breve descrição das funcionalidades do
 programa e a sintaxe de seu uso.*/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
 
 void comoUsar(void) {
     printf("O programa TPP4 calcula: \n\n");
@@ -29,12 +26,12 @@ void comoUsar(void) {
     printf("\t\t= TPP4 b arq1 n =\n");
     printf("\t\t=================\n\n");
    
-    printf("Cria o arquivo TEXTO com nome arq3 que é 0 resultado da intersecção dos elementos dos arquivos TEXTOS arq1 e arq2: \n");
+    printf("Cria o arquivo TEXTO com nome arq3 que é o resultado da intersecção dos elementos dos arquivos TEXTOS arq1 e arq2: \n");
     printf("\t\t===========================\n");
     printf("\t\t= TPP4 t 1 arq1 arq2 arq3 =\n");
     printf("\t\t===========================\n\n");   
    
-    printf("Cria o arquivo BINARIO com nome arq3 que é 0 resultado da intersecção dos elementos dos arquivos BINARIOS arq1 e arq2: \n");
+    printf("Cria o arquivo BINARIO com nome arq3 que é o resultado da intersecção dos elementos dos arquivos BINARIOS arq1 e arq2: \n");
     printf("\t\t===========================\n");
     printf("\t\t= TPP4 b 1 arq1 arq2 arq3 =\n");
     printf("\t\t===========================\n\n"); 
@@ -58,7 +55,7 @@ void comoUsar(void) {
     printf("\t\t===========================\n");
     printf("\t\t= TPP4 b 2 arq1 arq2 arq3 =\n");
     printf("\t\t===========================\n\n");   
-
+    
     printf("Lista na tela os elementos pertencentes ao arquivo do tipo TEXTO arq1: \n");
     printf("\t\t===============\n");
     printf("\t\t= TPP4 t arq1 =\n");
@@ -81,6 +78,28 @@ void comoUsar(void) {
 
 //============================================================================================================================
 
+void ordenarVetor(int vetor[], int dim)
+{
+    int i, j, aux;
+    for(j=dim-1; j>=1; j--){
+		for(i=0; i<j; i++){
+			if(vetor[i]>vetor[i+1]){
+				aux=vetor[i];
+                vetor[i]=vetor[i+1];
+                vetor[i+1]=aux;
+            }
+        }
+    }
+
+    return;
+}
+
+
+
+
+
+//============================================================================================================================
+
 /*Função para gerar valores aleatórios.*/
 
 /*int geraNum(int dim) {
@@ -93,4 +112,16 @@ void comoUsar(void) {
     }
 }*/
 
+//============================================================================================================================
+//Abrir arquivos:
+
+/*short abrirArq(FILE *f, char nomeArq[], char modAcess) {
+    f = fopen(nomeArq, modAcess);
+    if( (f == NULL) {
+        printf("ERRO na abertura do arquivo %s!!!\n", argv[2]);
+        return 0;
+    }
+    return 1;
+}
+*/
 //============================================================================================================================
