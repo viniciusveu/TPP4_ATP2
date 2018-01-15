@@ -24,6 +24,7 @@ esteja ordenado e seja relativo a uma das operações abaixo:
 
 #include "functions.c"
 
+#define ESPACO '\0'
 #define PULA puts("\n")
 #define TAM 50
 
@@ -33,7 +34,8 @@ FILE *f1, *f2, *ff;
 
 int main(int argc, char *argv[]) {
     char ch, t='t', b='b';
-    int cont, val, i, j, n, n1, n2;
+    int cont, val, i, j, n, n1, n2, vetor[TAM];
+    
     time_t tim;
     setlocale(LC_ALL, "Portuguese");
     switch(argc) {
@@ -48,13 +50,11 @@ int main(int argc, char *argv[]) {
                     printf("ERRO na abertura do arquivo %s!!! O arquivo está criado? \n", argv[2]);
                     exit(1);
                 }
-                while (1) {
-                    ch = fgetc(f1);
-                    n = atoi(ch);
-                    if(feof(f1)) break;
-                    if(i == '\n') PULA;
-                    else printf("%d ", i);
-                }
+                
+                printf("Os números do arquivo são os sequintes: \n");
+                while( (ch = fgetc(f1)) != EOF)
+                        printf("%c", ch);
+                
                 fclose(f1);
                 //if( fclose(f1) != 0 )   
                 //    printf("ERRO ao fechar o arquivo %s!!!\n", argv[2]);
@@ -75,12 +75,25 @@ int main(int argc, char *argv[]) {
                     exit(1);
                 }
                 //srand((unsigned) time(&tim));
+                
                 printf("Entre com os valores do arquivo: \n");
-                for(cont=1; cont <= *argv[3]; cont++) {
-                    //fputc(rand(), f1);
-                    scanf("%c", &ch);
-                    fputc(ch, f1);
+                for(n = atoi(argv[3]); 0 < n; n--) {
+                    scanf("%d", &i);
+                    fflush(stdin);
+                    fprintf(f1, "%d ", i);
                 }
+                n = atoi(argv[3]);
+                for(i=0; i<n; i++) {
+                    fscanf(f1, "%d ", &n1);
+                    fflush(stdin);                   
+                    vetor[i] = n1;
+                }
+                ordenarVetor(vetor, n);
+                rewind(f1);
+                for(i=0; i<n; i++) {
+                    fprintf(f1, "%d", *(vetor+i));
+                }
+
                 printf("Arquivo criado com sucesso!!!");
                 fclose(f1);
             }
@@ -155,7 +168,7 @@ int main(int argc, char *argv[]) {
 
     
     puts("\n\n");
-    system("PAUSE");
+    //system("PAUSE");
     return 0;
 }
 
