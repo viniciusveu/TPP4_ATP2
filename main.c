@@ -34,7 +34,7 @@ FILE *f1, *f2, *ff;
 
 int main(int argc, char *argv[]) {
     char ch, t='t', b='b';
-    int cont, val, i, j, n, n1, n2, vetor[TAM];
+    int cont, aux, val, i, j, n, n1, n2, vetor[TAM];
     
     time_t tim;
     setlocale(LC_ALL, "Portuguese");
@@ -83,9 +83,8 @@ int main(int argc, char *argv[]) {
                     vetor[i] = n1;
                 }
                 ordenarVetor(vetor, n);
-                for(i=0; i<n; i++) {
+                for(i=0; i<n; i++)
                     fprintf(f1, "%d ", vetor[i]);
-                }
 
                 printf("Arquivo criado com sucesso!!!");
                 fclose(f1);
@@ -100,38 +99,40 @@ int main(int argc, char *argv[]) {
         break;
 
         case 6: //Casos de 1 a 3
-            switch(*argv[2]) {
-                case 1: //Cria o arquivo TEXTO/BINARIO com nome arq3 que é o resultado da intersecção dos elementos dos arquivos BINARIOS arq1 e arq2
+         //Cria o arquivo TEXTO/BINARIO com nome arq3 que é o resultado da intersecção dos elementos dos arquivos BINARIOS arq1 e arq2
                     if(*argv[1] == t) {
-                        if(*argv[2] == 1) {
+                        if(*argv[2] == '1') {
                             if( (f1=fopen(argv[3], "r") ) == NULL) {
-                                printf("ERRO na abertura do arquivo %s!!! O arquivo está criado? \n", argv[3]);
+                                printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[3]);
                                 exit(1);
                             }
                             if( (f2=fopen(argv[4], "r") ) == NULL) {
-                                printf("ERRO na abertura do arquivo %s!!! O arquivo está criado? \n", argv[4]);
+                                printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[4]);
                                 exit(1);
                             }
                             if( (ff=fopen(argv[5], "w+") ) == NULL) {
-                                printf("ERRO na abertura do arquivo %s!!! O arquivo está criado? \n", argv[5]);
+                                printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[5]);
                                 exit(1);
                             }
 
-                            for(i=0; i != EOF; i++) {
-                                n1 = fgetc(f1);
-                                for(j=0; j != EOF; j++){
-                                    if(n1 == fgetc(f2)) fputc(n1, ff);
+                            while(!(feof(f1))) {
+                                fscanf(f1, "%d", &n1);
+                                rewind(f2);
+                                while(!(feof(f2))) {
+                                    fscanf(f2, "%d", &n2);
+                                    if(n1 == n2) fprintf(ff, "%d ", n1);
                                 }
                             }
 
                             fclose(f1);
                             fclose(f2);
                             fclose(ff);
+                            printf("Arquivos fechados!!");
                         }
-                        if(*argv[2] == 2) {
+                        if(*argv[2] == 2) { //Cria o arquivo TEXTO com nome arq3 que é resultado da união dos elementos dos arquivos TEXTOS arq1 e arq2
 
                         }
-                        if(*argv[2] == 3) {
+                        if(*argv[2] == 3) { //Cria o arquivo TEXTO com nome arq3 que é resultado da diferença dos elementos do arquivo TEXTO arq1, menos os elementos do arquivo TEXTO arq2
 
                         }
                         else printf("Entre com a opção 1, 2 ou 3!\n");
@@ -141,19 +142,6 @@ int main(int argc, char *argv[]) {
                     }
                     else printf("Erro! Entre com o argumento t se o arquivo for do tipo texto, e b se for do tipo binário.\n");
                 break;
-                
-                case 2: //Cria o arquivo TEXTO com nome arq3 que é resultado da união dos elementos dos arquivos TEXTOS arq1 e arq2
-
-                break; 
-
-                case 3: //Cria o arquivo TEXTO com nome arq3 que é resultado da diferença dos elementos do arquivo TEXTO arq1, menos os elementos do arquivo TEXTO arq2
-
-                break;
-
-                default:
-                    printf("Entre com as opções 1, 2 ou 3! '-' \n");
-                break;
-            } //Swith
         default: 
             printf("ERRO! :(\n");
         break;
