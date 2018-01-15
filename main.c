@@ -77,21 +77,14 @@ int main(int argc, char *argv[]) {
                 //srand((unsigned) time(&tim));
                 
                 printf("Entre com os valores do arquivo: \n");
-                for(n = atoi(argv[3]); 0 < n; n--) {
-                    scanf("%d", &i);
-                    fflush(stdin);
-                    fprintf(f1, "%d ", i);
-                }
                 n = atoi(argv[3]);
                 for(i=0; i<n; i++) {
-                    fscanf(f1, "%d ", &n1);
-                    fflush(stdin);                   
+                    scanf("%d", &n1);                   
                     vetor[i] = n1;
                 }
                 ordenarVetor(vetor, n);
-                rewind(f1);
                 for(i=0; i<n; i++) {
-                    fprintf(f1, "%d", *(vetor+i));
+                    fprintf(f1, "%d ", vetor[i]);
                 }
 
                 printf("Arquivo criado com sucesso!!!");
