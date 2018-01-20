@@ -8,6 +8,8 @@
 /*Lista na tela uma breve descrição das funcionalidades do
 programa e a sintaxe de seu uso.*/
 
+#include "functions.h"
+
 
 void comoUsar(void) {
     printf("O programa TPP4 calcula: \n\n");
@@ -94,6 +96,13 @@ void ordenarVetor(int vetor[], int dim)
     return;
 }
 
+void openFile(FILE *f1, int mode, char *fileName){ //1-Texto, 2- Binario
+    switch(mode){
+        case 1: 
+            f1 = fopen(fileName, TEXTO.l)
+    }
+
+}
 
 
 
@@ -105,10 +114,8 @@ void ordenarVetor(int vetor[], int dim)
 /*int geraNum(int dim) {
     time_t t;
     int i;
-
     srand((unsigned) time(&t));
     for(i=0; i<dim; i++)    {
-
     }
 }*/
 
@@ -124,4 +131,3 @@ void ordenarVetor(int vetor[], int dim)
     return 1;
 }
 */
-//============================================================================================================================
