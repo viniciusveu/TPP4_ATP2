@@ -120,6 +120,48 @@ void copiarArquivoBIN(FILE *f1, FILE *f2){
     
 }
 
+void diferenzaBIN(FILE *f1, FILE *f2, FILE *f3){
+    //diferença f1 - f2
+    int aux = 0, aux2 = -1, i, j;
+    rewind(f1);
+    rewind(f2);
+    while(!feof(f1)){
+        fread(&i, sizeof(int), 1, f1);
+        while(!feof(f2)){
+            fread(&j, sizeof(int), 1, f2);
+            if(i == j || aux2 == i) {
+                aux = 1;
+                //*aux2 = i; 
+                break;
+            }
+        }
+        if(aux == 1) 
+            aux = 0;
+        else if(aux == 0){
+            printf("\n \n IMPRIMINDO \n \n");
+            fwrite(&i, sizeof(int), 1, f3);
+        }
+        rewind(f2);
+    }
+}
+
+void diferenzaTXT(FILE *f1, FILE *f2, FILE *f3){
+    while(!feof(f1)){
+        fscanf(f1, "%d", &i);
+        while(!feof(f2)){
+            fscanf(f2, "%d", &j);
+            if(i == j || aux2 == i){
+                aux = 1;
+                break;
+            } 
+        }
+        if(aux == 1)
+            aux = 0;
+        else if(aux == 0)
+            fprintf(f3, "%d ", i);
+        rewind(f2);
+    }
+}
 
 
 //============================================================================================================================
