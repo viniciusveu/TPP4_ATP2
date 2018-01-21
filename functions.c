@@ -9,6 +9,8 @@
 programa e a sintaxe de seu uso.*/
 
 #include "functions.h"
+#include "func_ord.h"
+
 #define ERROR "ERRO NA ABERTURA DO ARQUIVO!\n"
 
 void comoUsar(void) {
@@ -164,7 +166,20 @@ void diferenzaTXT(FILE *f1, FILE *f2, FILE *f3){
     }
 }
 
-void uniaoBIN(FILE *f1, FILE *f2, FILE *f3, char *nomeArq3){
+void uniaoBIN(FILE *f1, FILE *f2, FILE *f3, char *nomeArq1, char *nomeArq2, char *nomeArq3){
+
+    if( (f1=fopen(nomeArq1, "rb") ) == NULL) {
+        printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", nomeArq1);
+        exit(1);
+    }
+    if( (f2=fopen(nomeArq2, "rb") ) == NULL) {
+        printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", nomeArq2);
+        exit(1);
+    }
+    if( (f3=fopen(nomeArq3, "wb") ) == NULL) {
+        printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", nomeArq3);
+        exit(1);
+    }
 
     copiarArquivoBIN(f1, f3);
     fclose(f1);
@@ -182,6 +197,9 @@ void uniaoBIN(FILE *f1, FILE *f2, FILE *f3, char *nomeArq3){
     
     bubbleSort(f3);
     fclose(f3);
+    printf("%s com a UNIÃO foi criado!\n", nomeArq3);
+    
+    return;
 }
 
 
@@ -209,3 +227,31 @@ void uniaoBIN(FILE *f1, FILE *f2, FILE *f3, char *nomeArq3){
     return 1;
 }
 */
+
+void encontraUniao(FILE *f1, FILE *f2, FILE *f3) 
+{
+    int n1, n2, n, aux;
+    while(1) {
+        fscanf(f1, "%d", &n1);
+        fprintf(f3, "%d ", n1);
+        fscanf(f1, "%d", &n2);
+        while(1) {
+            fscanf(f2, "%d", &n);
+            if(feof(f2)) break;
+            if(n1<n && n<n2)
+                fprintf(f3, "%d ", n);
+        }
+        if(n1!=n2) fprintf(f3, "%d ", n2);
+        if(feof(f1)) break;
+    }
+    while(1) {
+        fscanf(f2, "%d", &n);
+        if(feof(f2)) break;
+        if(n!=aux) {
+            fprintf(f3, "%d ", n);
+            aux=n;
+        }
+    }
+
+    return;
+}
