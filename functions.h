@@ -4,6 +4,7 @@
 //texto = t
 
 void comoUsar(void);
+void ordenarVetor(int vetor[], int dim);
 void checkFile(FILE *f1);
 void printBinArc(FILE *f1);
 void arcRandom(FILE *f);
