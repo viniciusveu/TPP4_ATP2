@@ -9,7 +9,7 @@
 programa e a sintaxe de seu uso.*/
 
 #include "functions.h"
-
+#define ERRO "ERRO NA ABERTURA DO ARQUIVO!\n"
 
 void comoUsar(void) {
     printf("O programa TPP4 calcula: \n\n");
@@ -80,30 +80,45 @@ void comoUsar(void) {
 
 //============================================================================================================================
 
-void ordenarVetor(int vetor[], int dim)
-{
-    int i, j, aux;
-    for(j=dim-1; j>=1; j--){
-		for(i=0; i<j; i++){
-			if(vetor[i]>vetor[i+1]){
-				aux=vetor[i];
-                vetor[i]=vetor[i+1];
-                vetor[i+1]=aux;
-            }
-        }
+void checkFile(FILE *f1){
+    if(f1 == NULL){
+        printf(ERROR);
+        exit(1);
     }
-
-    return;
 }
 
-void openFile(FILE *f1, int mode, char *fileName){ //1-Texto, 2- Binario
-    switch(mode){
-        case 1: 
-            f1 = fopen(fileName, TEXTO.l)
-    }
-
+void printBinArc(FILE *f1){
+    double n;
+    while(1){
+	    fread(&n,sizeof(double),1, f1);
+		if(feof(f1)) break;
+		printf("%.2f \n",n);
+	}
 }
 
+void arcRandom(FILE *f){
+	double temp;
+    int M = 10, i;
+	srand(time(NULL));
+	for(i=0;i<M;i++){
+		temp = rand()%100;
+		fwrite(&temp,sizeof(double),1,f);
+	}
+	return;
+}
+
+void copiarArquivoTXT(FILE *f1, FILE *f2){ // Copia para tipo texto
+    char arq1[1000];
+    while(fgets(arq1, 1000, f1))
+        fputs(arq1, f2);
+}
+
+void copiarArquivoBIN(FILE *f1, FILE *f2){
+    double arq1[sizeof(double)];
+    while(fread(arq1, sizeof(double), 1, f1))
+        fwrite(arq1, sizeof(double), 1, f2);
+    
+}
 
 
 

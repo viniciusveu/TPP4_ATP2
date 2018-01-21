@@ -3,12 +3,11 @@
 
 //texto = t
 
-typedef enum texto {LEITURA, ESCRITA} TEXTO;
-typedef enum binario {LEITURA, ESCRITA} BINARIO;
-typedef
-
 void comoUsar(void);
-void openFile(FILE *f1, int mode);
-
+void checkFile(FILE *f1);
+void printBinArc(FILE *f1);
+void arcRandom(FILE *f);
+void copiarArquivoBIN(FILE *f1, FILE *f2);
+void copiarArquivoTXT(FILE *f1, FILE *f2);
 
 #endif
