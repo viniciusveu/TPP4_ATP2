@@ -8,12 +8,12 @@ Ciência da Computação - FCT/UNESP, 2017
 Suponha a existência de dois arquivos de números inteiros
 (ordenados) com tamanho m e n, respectivamente.
 Escreva um programa que lê ambos os arquivos e seja capaz
-de gerar um terceiro arquivo, de modo que este último também 
+de gerar um terceiro arquivo, de modo que este último também
 esteja ordenado e seja relativo a uma das operações abaixo:
 -intersecção entre os dois conjuntos(1);
 -união entre os dois conjuntos(2);
 -diferença A-B(3);
--diferença B-A(3); 
+-diferença B-A(3);
 */
 //======================================================================================================================================================
 
@@ -34,29 +34,29 @@ FILE *f1, *f2, *ff;
 
 int main(int argc, char *argv[]) {
     char ch, t='t', b='b';
-    int cont, aux, val, i, j, n, n1, n2, vetor[TAM];
-    
+    int cont, aux, val, i, j, n, num, n1, n2, vetor[TAM];
+
     time_t tim;
     setlocale(LC_ALL, "Portuguese");
     switch(argc) {
-        
+
         case 1: //TPP4
             comoUsar();
         break;
-        
+
         case 3: //TPP4 t arq1
             if(*argv[1] == t) {
                 if( (f1=fopen(argv[2], "r") ) == NULL) {
                     printf("ERRO na abertura do arquivo %s!!! O arquivo está criado? \n", argv[2]);
                     exit(1);
                 }
-                
-                printf("Os números do arquivo são os sequintes: \n");
+
+                printf("Os números do arquivo texto são os sequintes: \n");
                 while( (ch = fgetc(f1)) != EOF)
                         printf("%c", ch);
-                
+                PULA;
                 fclose(f1);
-                //if( fclose(f1) != 0 )   
+                //if( fclose(f1) != 0 )
                 //    printf("ERRO ao fechar o arquivo %s!!!\n", argv[2]);
             }
             else if(*argv[1] == b) {
@@ -64,90 +64,164 @@ int main(int argc, char *argv[]) {
                     printf("ERRO na abertura do arquivo %s!!! O arquivo está criado? \n", argv[2]);
                     exit(1);
                 }
+                printf("Os números do arquivo binário são os sequintes: \n");
+                while(1) {
+                    fread(&num, sizeof(int), 1, f1);
+                    if(feof(f1)) break;
+                    printf("%d ", num);
+                }
+                PULA;
+                fclose(f1);
             }
             else printf("Erro! Entre com o argumento t se o arquivo for do tipo texto, e b se for do tipo binário.\n");
         break;
-        
+
         case 4: //TPP4 t arq1 n
             if(*argv[1] == t) {
-                if( (f1=fopen(argv[2], "w+") ) == NULL) {
+                if( (f1=fopen(argv[2], "w") ) == NULL) {
                     printf("ERRO na abertura do arquivo %s!!!\n", argv[2]);
                     exit(1);
                 }
                 //srand((unsigned) time(&tim));
-                
-                printf("Entre com os valores do arquivo: \n");
+
+                printf("Entre com os valores do arquivo: [Aperte ENTER após entrar com cada valor]\n");
                 n = atoi(argv[3]);
                 for(i=0; i<n; i++) {
-                    scanf("%d", &n1);                   
-                    vetor[i] = n1;
+                    scanf("%d", &num);
+                    vetor[i] = num;
                 }
                 ordenarVetor(vetor, n);
                 for(i=0; i<n; i++)
                     fprintf(f1, "%d ", vetor[i]);
 
-                printf("Arquivo criado com sucesso!!!");
+                printf("Arquivo criado e ordenado com sucesso! :D");
                 fclose(f1);
             }
             else if(*argv[1] == b) {
-                if( (f1=fopen(argv[2], "rb") ) == NULL) {
+                if( (f1=fopen(argv[2], "w+b") ) == NULL) {
                     printf("ERRO na abertura do arquivo %s!!! O arquivo está criado? \n", argv[2]);
                     exit(1);
                 }
+                printf("Entre com os valores do arquivo: [Aperte ENTER após entrar com cada valor]\n");
+                n = atoi(argv[3]);
+                for(i=0; i<n; i++) {
+                    scanf("%d", &num);
+                    fwrite(&num, sizeof(int), 1, f1);
+                }
+                rewind(f1);
+                bubbleSort(f1);
+                printf("Arquivo binário criado e ordenado com sucesso! :D");
+                fclose(f1);
             }
             else printf("Erro! Entre com o argumento t se o arquivo for do tipo texto, e b se for do tipo binário.\n");
         break;
 
         case 6: //Casos de 1 a 3
          //Cria o arquivo TEXTO/BINARIO com nome arq3 que é o resultado da intersecção dos elementos dos arquivos BINARIOS arq1 e arq2
-                    if(*argv[1] == t) {
-                        if(*argv[2] == '1') {
-                            if( (f1=fopen(argv[3], "r") ) == NULL) {
-                                printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[3]);
-                                exit(1);
-                            }
-                            if( (f2=fopen(argv[4], "r") ) == NULL) {
-                                printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[4]);
-                                exit(1);
-                            }
-                            if( (ff=fopen(argv[5], "w+") ) == NULL) {
-                                printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[5]);
-                                exit(1);
-                            }
+                if(*argv[1] == t) {
+                    if(*argv[2] == '1') {
+                        if( (f1=fopen(argv[3], "r") ) == NULL) {
+                            printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[3]);
+                            exit(1);
+                        }
+                        if( (f2=fopen(argv[4], "r") ) == NULL) {
+                            printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[4]);
+                            exit(1);
+                        }
+                        if( (ff=fopen(argv[5], "w") ) == NULL) {
+                            printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[5]);
+                            exit(1);
+                        }
 
-                            while(!(feof(f1))) {
-                                fscanf(f1, "%d", &n1);
-                                rewind(f2);
-                                while(!(feof(f2))) {
+                        printf("Calcular a intersecção entre dois arquivos tipo texto. \n");
+                        aux=NULL;
+                        while(1) {
+                            fscanf(f1, "%d", &n1);
+                            if(feof(f1)) break;
+                            if(aux != n1) {
+                                while(1) {
                                     fscanf(f2, "%d", &n2);
-                                    if(n1 == n2) fprintf(ff, "%d ", n1);
+                                    if(feof(f2)) break;
+                                    if(n1 == n2) {
+                                        fprintf(ff, "%d ", n1);
+                                        break;
+                                    }
                                 }
                             }
-
-                            fclose(f1);
-                            fclose(f2);
-                            fclose(ff);
-                            printf("Arquivos fechados!!");
+                            aux = n1;
+                            rewind(f2);
                         }
-                        if(*argv[2] == 2) { //Cria o arquivo TEXTO com nome arq3 que é resultado da união dos elementos dos arquivos TEXTOS arq1 e arq2
+                        printf("O arquivo %s com a intersecção foi criado!\n", argv[5]);
 
-                        }
-                        if(*argv[2] == 3) { //Cria o arquivo TEXTO com nome arq3 que é resultado da diferença dos elementos do arquivo TEXTO arq1, menos os elementos do arquivo TEXTO arq2
-
-                        }
-                        else printf("Entre com a opção 1, 2 ou 3!\n");
+                        fclose(f1);
+                        fclose(f2);
+                        fclose(ff);
                     }
-                    else if(*argv[1] == b) {
+                    else if(*argv[2] == 2) { //Cria o arquivo TEXTO com nome arq3 que é resultado da união dos elementos dos arquivos TEXTOS arq1 e arq2
 
                     }
-                    else printf("Erro! Entre com o argumento t se o arquivo for do tipo texto, e b se for do tipo binário.\n");
+                    else if(*argv[2] == 3) { //Cria o arquivo TEXTO com nome arq3 que é resultado da diferença dos elementos do arquivo TEXTO arq1, menos os elementos do arquivo TEXTO arq2
+
+                    }
+                    else printf("Entre com a opção 1, 2 ou 3!\n");
+                }
+                //Caso Binário: =======================================================================
+                else if(*argv[1] == b) {
+                    if(*argv[2] == '1') {
+                        if( (f1=fopen(argv[3], "rb") ) == NULL) {
+                            printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[3]);
+                            exit(1);
+                        }
+                        if( (f2=fopen(argv[4], "rb") ) == NULL) {
+                            printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[4]);
+                            exit(1);
+                        }
+                        if( (ff=fopen(argv[5], "wb") ) == NULL) {
+                            printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[5]);
+                            exit(1);
+                        }
+
+                        printf("Calcular a intersecção entre dois arquivos tipo binário. \n");
+                        aux=NULL;
+                        while(1) {
+                            fread(&n1, sizeof(int), 1, f1);
+                            if(feof(f1)) break;
+                            if(aux != n1) {
+                                while(1) {
+                                    fread(&n2, sizeof(int), 1, f2);
+                                    if(feof(f2)) break;
+                                    if(n1 == n2) {
+                                        fwrite(&n1, sizeof(int), 1, ff);
+                                        break;
+                                    }
+                                }
+                            }
+                            aux = n1;
+                            rewind(f2);
+                        }
+                        printf("O arquivo %s com a intersecção foi criado!\n", argv[5]);
+
+                        fclose(f1);
+                        fclose(f2);
+                        fclose(ff);
+                    }
+                    else if(*argv[2] == 2) { //Cria o arquivo TEXTO com nome arq3 que é resultado da união dos elementos dos arquivos TEXTOS arq1 e arq2
+
+                    }
+                    else if(*argv[2] == 3) { //Cria o arquivo TEXTO com nome arq3 que é resultado da diferença dos elementos do arquivo TEXTO arq1, menos os elementos do arquivo TEXTO arq2
+
+                    }
+                    else printf("Entre com a opção 1, 2 ou 3!\n");
+                }
+
+                else printf("Erro! Entre com o argumento t se o arquivo for do tipo texto, e b se for do tipo binário.\n");
                 break;
-        default: 
+        default:
             printf("ERRO! :(\n");
         break;
     }
 
-    
+
     puts("\n\n");
     //system("PAUSE");
     return 0;
