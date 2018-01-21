@@ -157,7 +157,7 @@ int main(int argc, char *argv[]) {
                         fclose(f2);
                         fclose(ff);
                     }
-                    else if(*argv[2] == 2) { //Cria o arquivo TEXTO com nome arq3 que é resultado da união dos elementos dos arquivos TEXTOS arq1 e arq2
+                    else if(*argv[2] == '2') { //Cria o arquivo TEXTO com nome arq3 que é resultado da união dos elementos dos arquivos TEXTOS arq1 e arq2
 
                         if( (f1=fopen(argv[3], "r") ) == NULL) {
                             printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[3]);
@@ -196,7 +196,7 @@ int main(int argc, char *argv[]) {
                         fclose(f2);
                         fclose(ff);
                     }
-                    else if(*argv[2] == 3) { //Cria o arquivo TEXTO com nome arq3 que é resultado da diferença dos elementos do arquivo TEXTO arq1, menos os elementos do arquivo TEXTO arq2
+                    else if(*argv[2] == '3') { //Cria o arquivo TEXTO com nome arq3 que é resultado da diferença dos elementos do arquivo TEXTO arq1, menos os elementos do arquivo TEXTO arq2
 
                         if( (f1=fopen(argv[3], "r") ) == NULL) {
                             printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[3]);
