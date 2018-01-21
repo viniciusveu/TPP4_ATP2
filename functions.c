@@ -9,7 +9,7 @@
 programa e a sintaxe de seu uso.*/
 
 #include "functions.h"
-#define ERRO "ERRO NA ABERTURA DO ARQUIVO!\n"
+#define ERROR "ERRO NA ABERTURA DO ARQUIVO!\n"
 
 void comoUsar(void) {
     printf("O programa TPP4 calcula: \n\n");
