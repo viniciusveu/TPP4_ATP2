@@ -34,7 +34,7 @@ FILE *f1, *f2, *ff;
 
 int main(int argc, char *argv[]) {
     char ch, t='t', b='b';
-    int cont, aux, val, i, j, n, num, n1, n2, vetor[TAM];
+    int cont, *aux, val, i, j, n, num, n1, n2, vetor[TAM];
 
     time_t tim;
     setlocale(LC_ALL, "Portuguese");
@@ -138,7 +138,7 @@ int main(int argc, char *argv[]) {
                         while(1) {
                             fscanf(f1, "%d", &n1);
                             if(feof(f1)) break;
-                            if(aux != n1) {
+                            if(*aux != n1) {
                                 while(1) {
                                     fscanf(f2, "%d", &n2);
                                     if(feof(f2)) break;
@@ -148,7 +148,7 @@ int main(int argc, char *argv[]) {
                                     }
                                 }
                             }
-                            aux = n1;
+                            *aux = n1;
                             rewind(f2);
                         }
                         printf("O arquivo %s com a intersecção foi criado!\n", argv[5]);
@@ -159,8 +159,63 @@ int main(int argc, char *argv[]) {
                     }
                     else if(*argv[2] == 2) { //Cria o arquivo TEXTO com nome arq3 que é resultado da união dos elementos dos arquivos TEXTOS arq1 e arq2
 
+                        if( (f1=fopen(argv[3], "r") ) == NULL) {
+                            printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[3]);
+                            exit(1);
+                        }
+                        if( (f2=fopen(argv[4], "r") ) == NULL) {
+                            printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[4]);
+                            exit(1);
+                        }
+                        if( (ff=fopen(argv[5], "w") ) == NULL) {
+                            printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[5]);
+                            exit(1);
+                        }  
+
+                        printf("Calcular a união %s com %s.\n", argv[3], argv[4]);
+                        fscanf(f1, "%d", &n1);
+                        fscanf(f2, "%d", &n2);
+                        while(1) {
+                
+                            if( n2>n1 ) {
+                                fprintf(ff, "%d ", n1);
+                                fscanf(f1, "%d", &n1);
+                            }
+                            else if( n2<n1 ) {
+                                fprintf(ff, "%d ", n2);
+                                fscanf(f2, "%d", &n2);
+                            } else {
+                                fprintf(ff, "%d ", n1);
+                                fscanf(f1, "%d", &n1);
+                                fscanf(f2, "%d", &n2);
+                            }
+                            if(feof(f1) && feof(f2)) break;
+                        }
+
+                        fclose(f1);
+                        fclose(f2);
+                        fclose(ff);
                     }
                     else if(*argv[2] == 3) { //Cria o arquivo TEXTO com nome arq3 que é resultado da diferença dos elementos do arquivo TEXTO arq1, menos os elementos do arquivo TEXTO arq2
+
+                        if( (f1=fopen(argv[3], "r") ) == NULL) {
+                            printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[3]);
+                            exit(1);
+                        }
+                        if( (f2=fopen(argv[4], "r") ) == NULL) {
+                            printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[4]);
+                            exit(1);
+                        }
+                        if( (ff=fopen(argv[5], "w") ) == NULL) {
+                            printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[5]);
+                            exit(1);
+                        }  
+                        
+
+
+                        fclose(f1);
+                        fclose(f2);
+                        fclose(ff);
 
                     }
                     else printf("Entre com a opção 1, 2 ou 3!\n");
@@ -186,7 +241,7 @@ int main(int argc, char *argv[]) {
                         while(1) {
                             fread(&n1, sizeof(int), 1, f1);
                             if(feof(f1)) break;
-                            if(aux != n1) {
+                            if(*aux != n1) {
                                 while(1) {
                                     fread(&n2, sizeof(int), 1, f2);
                                     if(feof(f2)) break;
@@ -196,7 +251,7 @@ int main(int argc, char *argv[]) {
                                     }
                                 }
                             }
-                            aux = n1;
+                            *aux = n1;
                             rewind(f2);
                         }
                         printf("O arquivo %s com a intersecção foi criado!\n", argv[5]);
