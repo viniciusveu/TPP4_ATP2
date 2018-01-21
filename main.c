@@ -29,13 +29,13 @@ esteja ordenado e seja relativo a uma das operações abaixo:
 #define PULA puts("\n")
 #define TAM 1000
 
-FILE *f1, *f2, *ff, *f4;
+FILE *f1, *f2, *ff;
 
 //MAIN======================================================================================================================================================
 
 int main(int argc, char *argv[]) {
     char ch, t='t', b='b';
-    int *aux=NULL, i, n, x, num, n1, n2, vetor[TAM], aux2 = -1;
+    int *aux=NULL, i, j, n, x, num, n1, n2, vetor[TAM], vet1[TAM], vet2[TAM], uniao[2*TAM];
 
     time_t tim;
     setlocale(LC_ALL, "Portuguese");
@@ -176,11 +176,7 @@ int main(int argc, char *argv[]) {
                         printf("Calcular a união de %s com %s.\n", argv[3], argv[4]);
                         
                         encontraUniao(f1, f2, ff);
-                        while(1) {
-                            fscanf(ff, "%d %d", &n1, &n2);
-                            if( n1==n2 ) 
-                        }
-                       
+                        
                         printf("Arquivo com a união foi criado com sucesso! :D\n");
 
                         fclose(f1);
@@ -252,60 +248,14 @@ int main(int argc, char *argv[]) {
                         fclose(ff);
                     }
                     else if(*argv[2] == '2') { //Cria o arquivo TEXTO com nome arq3 que é resultado da união dos elementos dos arquivos TEXTOS arq1 e arq2
-                        //união BINÁRIO
-                        f1 = fopen(argv[3], "rb"); checkFile(f1); 
-                        f2 = fopen(argv[4], "rb"); checkFile(f2); 
-                        ff = fopen(argv[5], "wb"); checkFile(ff);
-                        copiarArquivoBIN(f1, ff);
-                        fclose(ff);
-
-                        ff = fopen(argv[5], "ab+");
-                        checkFile(ff);
-                        copiarArquivoBIN(f2, ff);
-                        fclose(ff);
-
-                        ff = fopen(argv[5], "rb+"); checkFile(ff);
-                        f4 = fopen("arqAux.txt", "wb+"); checkFile(f4);
-                        bubbleSort(ff);
-                        rewind(ff);
-
-                        while(!feof(ff)){
-                            fread(&i, sizeof(int), 1, ff);
-                            if(aux2 != i){
-                                fwrite(&i, sizeof(int), 1, f4);
-                                aux2 = i;
-                            }
-                        }
-
-                        
-                        fclose(f1);
-                        fclose(f2);
-                        fclose(ff);
-                        fclose(f4);
-                        
-                        f4 = fopen("arqAux.txt", "rb"); checkFile(f4);
-                        ff = fopen(argv[5], "wb"); checkFile(ff);
-                        copiarArquivoBIN(f4, ff);
-                        printf("O arquivo %s de União resultante foi criado com Sucesso!", argv[5]);
-
-                        fclose(ff);
-                        fclose(f4);
                         
                         
+                        uniaoBIN(f1, f2, ff, argv[3], argv[4], argv[5]);
+
                     }
 
                     else if(*argv[2] == '3') { //Cria o arquivo TEXTO com nome arq3 que é resultado da diferença dos elementos do arquivo TEXTO arq1, menos os elementos do arquivo TEXTO arq2
-                        f1 = fopen(argv[3], "rb"); checkFile(f1);
-                        f2 = fopen(argv[4], "rb"); checkFile(f2);
-                        ff = fopen(argv[5], "wb"); checkFile(ff);
-                        
-                        diferenzaBIN(f1, f2, ff);
 
-                        fclose(f1);
-                        fclose(f2);
-                        fclose(ff);
-
-                        printf("ARQUIVO DIFERENÇA CRIADO COM SUCESSO!\n\n");
                     }
                     else printf("Entre com a opção 1, 2 ou 3!\n");
                 }
