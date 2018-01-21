@@ -164,37 +164,22 @@ void diferenzaTXT(FILE *f1, FILE *f2, FILE *f3){
     }
 }
 
-void uniaoBIN(FILE *f1, FILE *f2, FILE *f3){
-    if( (f1=fopen(argv[3], "rb") ) == NULL) {
-        printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[3]);
-        exit(1);
-    }
-    if( (f2=fopen(argv[4], "rb") ) == NULL) {
-        printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[4]);
-        exit(1);
-    }
-    if( (f3=fopen(argv[5], "wb") ) == NULL) {
-        printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[5]);
-        exit(1);
-    }
+void uniaoBIN(FILE *f1, FILE *f2, FILE *f3, char *nomeArq3){
 
     copiarArquivoBIN(f1, f3);
     fclose(f1);
     fclose(f3);
     
-    if( (f3=fopen(argv[5], "ab") ) == NULL) {
-        printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[5]);
-        exit(1);
-    }
+    f3 = fopen(nomeArq3, "ab");
+    checkFile(f3);
 
     copiarArquivoBIN(f2, f3);
     fclose(f2);
     fclose(f3);
 
-    if( (f3=fopen(argv[5], "rb+") ) == NULL) {
-        printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[5]);
-        exit(1);
-    }
+    f3 = fopen(nomeArq3, "rb+");
+    checkFile(f3);
+    
     bubbleSort(f3);
     fclose(f3);
 }

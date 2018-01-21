@@ -11,6 +11,6 @@ void copiarArquivoBIN(FILE *f1, FILE *f2);
 void copiarArquivoTXT(FILE *f1, FILE *f2);
 void diferenzaBIN(FILE *f1, FILE *f2, FILE *f3);
 void diferenzaTXT(FILE *f1, FILE *f2, FILE *f3);
-void uniaoBIN(FILE *f1, FILE *f2, FILE *f3);
+void uniaoBIN(FILE *f1, FILE *f2, FILE *f3, char *nomeArq3)
 
 #endif
