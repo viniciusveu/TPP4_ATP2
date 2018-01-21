@@ -80,6 +80,24 @@ void comoUsar(void) {
 
 //============================================================================================================================
 
+void ordenarVetor(int vetor[], int dim)
+{
+    int i, j, aux;
+    for(j=dim-1; j>=1; j--){
+		for(i=0; i<j; i++){
+			if(vetor[i]>vetor[i+1]){
+				aux=vetor[i];
+                vetor[i]=vetor[i+1];
+                vetor[i+1]=aux;
+            }
+        }
+    }
+
+    return;
+} //ordenarVetor
+
+//============================================================================================================================
+
 void checkFile(FILE *f1){
     if(f1 == NULL){
         printf(ERROR);
