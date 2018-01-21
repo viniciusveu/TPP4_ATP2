@@ -23,10 +23,11 @@ esteja ordenado e seja relativo a uma das operações abaixo:
 #include <time.h>
 
 #include "functions.c"
+#include "func_ord.c"
 
 #define ESPACO '\0'
 #define PULA puts("\n")
-#define TAM 50
+#define TAM 1000
 
 FILE *f1, *f2, *ff;
 
@@ -34,7 +35,7 @@ FILE *f1, *f2, *ff;
 
 int main(int argc, char *argv[]) {
     char ch, t='t', b='b';
-    int cont, *aux, val, i, j, n, num, n1, n2, vetor[TAM];
+    int *aux=NULL, i, n, x, num, n1, n2, vetor[TAM];
 
     time_t tim;
     setlocale(LC_ALL, "Portuguese");
@@ -172,25 +173,51 @@ int main(int argc, char *argv[]) {
                             exit(1);
                         }  
 
-                        printf("Calcular a união %s com %s.\n", argv[3], argv[4]);
+                        printf("Calcular a união de %s com %s.\n", argv[3], argv[4]);
                         fscanf(f1, "%d", &n1);
                         fscanf(f2, "%d", &n2);
+                        
                         while(1) {
-                
-                            if( n2>n1 ) {
+                                    
+                            if( (n2>n1) && (n1!=x) ) {
                                 fprintf(ff, "%d ", n1);
                                 fscanf(f1, "%d", &n1);
+                                x=n1;
                             }
-                            else if( n2<n1 ) {
+                            else if( (n2<n1) && (n2!=x) ) {
                                 fprintf(ff, "%d ", n2);
                                 fscanf(f2, "%d", &n2);
+                                x=n2;
                             } else {
                                 fprintf(ff, "%d ", n1);
+                                x=n1;
                                 fscanf(f1, "%d", &n1);
                                 fscanf(f2, "%d", &n2);
                             }
-                            if(feof(f1) && feof(f2)) break;
+                            if(feof(f1)) {
+                                while(1) {
+                                    fscanf(f2, "%d", &n2);
+                                    if(feof(f2)) break;
+                                    if(x!=n2) {
+                                        fprintf(ff, "%d ", n2); 
+                                        x=n2;
+                                    }
+                                }
+                                break;
+                            }
+                            if(feof(f2)) {
+                                while(1) {
+                                    fscanf(f1, "%d", &n1);
+                                    if(feof(f1)) break; 
+                                    if(x!=n1) {
+                                        fprintf(ff, "%d ", n1); 
+                                        x=n1;
+                                    }
+                                }
+                                break;
+                            }
                         }
+                        printf("Arquivo com a união foi criado com sucesso! :D\n");
 
                         fclose(f1);
                         fclose(f2);
@@ -260,10 +287,14 @@ int main(int argc, char *argv[]) {
                         fclose(f2);
                         fclose(ff);
                     }
-                    else if(*argv[2] == 2) { //Cria o arquivo TEXTO com nome arq3 que é resultado da união dos elementos dos arquivos TEXTOS arq1 e arq2
+                    else if(*argv[2] == '2') { //Cria o arquivo TEXTO com nome arq3 que é resultado da união dos elementos dos arquivos TEXTOS arq1 e arq2
+                        
+                        
+                        uniaoBIN(f1, f2, ff, argv[3], argv[4], argv[5]);
 
                     }
-                    else if(*argv[2] == 3) { //Cria o arquivo TEXTO com nome arq3 que é resultado da diferença dos elementos do arquivo TEXTO arq1, menos os elementos do arquivo TEXTO arq2
+
+                    else if(*argv[2] == '3') { //Cria o arquivo TEXTO com nome arq3 que é resultado da diferença dos elementos do arquivo TEXTO arq1, menos os elementos do arquivo TEXTO arq2
 
                     }
                     else printf("Entre com a opção 1, 2 ou 3!\n");
