@@ -295,7 +295,17 @@ int main(int argc, char *argv[]) {
                     }
 
                     else if(*argv[2] == '3') { //Cria o arquivo TEXTO com nome arq3 que é resultado da diferença dos elementos do arquivo TEXTO arq1, menos os elementos do arquivo TEXTO arq2
+                        f1 = fopen(argv[3], "rb"); checkFile(f1);
+                        f2 = fopen(argv[4], "rb"); checkFile(f2);
+                        ff = fopen(argv[5], "wb"); checkFile(ff);
+                        
+                        diferenzaBIN(f1, f2, ff);
 
+                        fclose(f1);
+                        fclose(f2);
+                        fclose(ff);
+
+                        printf("ARQUIVO DIFERENÇA CRIADO COM SUCESSO!\n\n");
                     }
                     else printf("Entre com a opção 1, 2 ou 3!\n");
                 }
