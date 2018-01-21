@@ -116,10 +116,10 @@ void copiarArquivoTXT(FILE *f1, FILE *f2){ // Copia para tipo texto
 }
 
 void copiarArquivoBIN(FILE *f1, FILE *f2){
-    double arq1[sizeof(double)];
-    while(fread(arq1, sizeof(double), 1, f1))
-        fwrite(arq1, sizeof(double), 1, f2);
-    
+    int arq1[sizeof(int)];
+    while(fread(arq1, sizeof(int), 1, f1)){
+        fwrite(arq1, sizeof(int), 1, f2);
+    }   
 }
 
 void diferenzaBIN(FILE *f1, FILE *f2, FILE *f3){
