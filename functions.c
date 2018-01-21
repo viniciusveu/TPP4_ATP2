@@ -80,24 +80,6 @@ void comoUsar(void) {
 
 //============================================================================================================================
 
-void ordenarVetor(int vetor[], int dim)
-{
-    int i, j, aux;
-    for(j=dim-1; j>=1; j--){
-		for(i=0; i<j; i++){
-			if(vetor[i]>vetor[i+1]){
-				aux=vetor[i];
-                vetor[i]=vetor[i+1];
-                vetor[i+1]=aux;
-            }
-        }
-    }
-
-    return;
-} //ordenarVetor
-
-//============================================================================================================================
-
 void checkFile(FILE *f1){
     if(f1 == NULL){
         printf(ERROR);
@@ -164,6 +146,7 @@ void diferenzaBIN(FILE *f1, FILE *f2, FILE *f3){
 }
 
 void diferenzaTXT(FILE *f1, FILE *f2, FILE *f3){
+    int i, j, aux = 0, aux2 = -1;
     while(!feof(f1)){
         fscanf(f1, "%d", &i);
         while(!feof(f2)){
@@ -179,6 +162,41 @@ void diferenzaTXT(FILE *f1, FILE *f2, FILE *f3){
             fprintf(f3, "%d ", i);
         rewind(f2);
     }
+}
+
+void uniaoBIN(FILE *f1, FILE *f2, FILE *f3){
+    if( (f1=fopen(argv[3], "rb") ) == NULL) {
+        printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[3]);
+        exit(1);
+    }
+    if( (f2=fopen(argv[4], "rb") ) == NULL) {
+        printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[4]);
+        exit(1);
+    }
+    if( (f3=fopen(argv[5], "wb") ) == NULL) {
+        printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[5]);
+        exit(1);
+    }
+
+    copiarArquivoBIN(f1, f3);
+    fclose(f1);
+    fclose(f3);
+    
+    if( (f3=fopen(argv[5], "ab") ) == NULL) {
+        printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[5]);
+        exit(1);
+    }
+
+    copiarArquivoBIN(f2, f3);
+    fclose(f2);
+    fclose(f3);
+
+    if( (f3=fopen(argv[5], "rb+") ) == NULL) {
+        printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[5]);
+        exit(1);
+    }
+    bubbleSort(f3);
+    fclose(f3);
 }
 
 
