@@ -174,49 +174,13 @@ int main(int argc, char *argv[]) {
                         }  
 
                         printf("Calcular a união de %s com %s.\n", argv[3], argv[4]);
-                        fscanf(f1, "%d", &n1);
-                        fscanf(f2, "%d", &n2);
                         
+                        encontraUniao(f1, f2, ff);
                         while(1) {
-                                    
-                            if( (n2>n1) && (n1!=x) ) {
-                                fprintf(ff, "%d ", n1);
-                                fscanf(f1, "%d", &n1);
-                                x=n1;
-                            }
-                            else if( (n2<n1) && (n2!=x) ) {
-                                fprintf(ff, "%d ", n2);
-                                fscanf(f2, "%d", &n2);
-                                x=n2;
-                            } else {
-                                fprintf(ff, "%d ", n1);
-                                x=n1;
-                                fscanf(f1, "%d", &n1);
-                                fscanf(f2, "%d", &n2);
-                            }
-                            if(feof(f1)) {
-                                while(1) {
-                                    fscanf(f2, "%d", &n2);
-                                    if(feof(f2)) break;
-                                    if(x!=n2) {
-                                        fprintf(ff, "%d ", n2); 
-                                        x=n2;
-                                    }
-                                }
-                                break;
-                            }
-                            if(feof(f2)) {
-                                while(1) {
-                                    fscanf(f1, "%d", &n1);
-                                    if(feof(f1)) break; 
-                                    if(x!=n1) {
-                                        fprintf(ff, "%d ", n1); 
-                                        x=n1;
-                                    }
-                                }
-                                break;
-                            }
+                            fscanf(ff, "%d %d", &n1, &n2);
+                            if( n1==n2 ) 
                         }
+                       
                         printf("Arquivo com a união foi criado com sucesso! :D\n");
 
                         fclose(f1);
