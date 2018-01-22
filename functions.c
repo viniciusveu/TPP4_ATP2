@@ -11,7 +11,7 @@ programa e a sintaxe de seu uso.*/
 #include "functions.h"
 #include "func_ord.h"
 
-#define ERROR "ERRO NA ABERTURA DO ARQUIVO!\n"
+#define ERROR "================ERRO NA ABERTURA DO ARQUIVO! O ARQUIVO FOI ABERTO??================\n"
 
 void comoUsar(void) {
     printf("O programa TPP4 calcula: \n\n");
@@ -124,7 +124,7 @@ void copiarArquivoBIN(FILE *f1, FILE *f2){
 
 void diferenzaBIN(FILE *f1, FILE *f2, FILE *f3){
     //diferença f1 - f2
-    int aux = 0, aux2 = -1, i, j;
+    int aux = 0, aux2 = -1, i = 0, j = 0;
     rewind(f1);
     rewind(f2);
     while(!feof(f1)){
@@ -133,17 +133,13 @@ void diferenzaBIN(FILE *f1, FILE *f2, FILE *f3){
             fread(&j, sizeof(int), 1, f2);
             if(i == j || aux2 == i) {
                 aux = 1;
-                //*aux2 = i; 
                 break;
             }
         }
         if(aux == 1) 
             aux = 0;
-        else if(aux == 0){
-            printf("\n \n IMPRIMINDO \n \n");
-            fwrite(&i, sizeof(int), 1, f3);
-        }
-        rewind(f2);
+        else if(aux == 0)
+           fwrite(&i, sizeof(int), 1, f3);
     }
 }
 
