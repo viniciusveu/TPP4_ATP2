@@ -22,6 +22,7 @@ Desenvolvido no SO Linux Ubuntu 16.04 LTS e Lubuntu 17.10.
 #include <stdio.h>
 #include <stdlib.h>
 #include <locale.h>
+#include <time.h>
 
 #include "functions.c"
 #include "func_ord.c"
@@ -36,7 +37,7 @@ FILE *f1, *f2, *f3, *ff;
 
 int main(int argc, char *argv[]) {
     char ch, t='t', b='b';
-    int *aux=NULL, x, i, j, n, num, n1, n2, vetor[TAM];
+    int *aux=NULL, x, i, j, n, num, n1, n2, vetor[TAM], aux2 = -1;
 
     time_t tim;
     setlocale(LC_ALL, "Portuguese");
@@ -48,10 +49,7 @@ int main(int argc, char *argv[]) {
 
         case 3: //TPP4 t arq1
             if(*argv[1] == t) {
-                if( (f1=fopen(argv[2], "r") ) == NULL) {
-                    printf("ERRO na abertura do arquivo %s!!! O arquivo está criado? \n", argv[2]);
-                    exit(1);
-                }
+               f1 = fopen(argv[2], "r"); checkFile(f1);
 
                 printf("Os números do arquivo texto são os sequintes: \n");
                 while( (ch = fgetc(f1)) != EOF)
@@ -62,10 +60,7 @@ int main(int argc, char *argv[]) {
                 //    printf("ERRO ao fechar o arquivo %s!!!\n", argv[2]);
             }
             else if(*argv[1] == b) {
-                if( (f1=fopen(argv[2], "rb") ) == NULL) {
-                    printf("ERRO na abertura do arquivo %s!!! O arquivo está criado? \n", argv[2]);
-                    exit(1);
-                }
+                f1 = fopen(argv[2], "rb"); checkFile(f1);
                 printf("Os números do arquivo binário são os sequintes: \n");
                 while(1) {
                     fread(&num, sizeof(int), 1, f1);
@@ -80,10 +75,7 @@ int main(int argc, char *argv[]) {
 
         case 4: //TPP4 t arq1 n
             if(*argv[1] == t) {
-                if( (f1=fopen(argv[2], "w") ) == NULL) {
-                    printf("ERRO na abertura do arquivo %s!!!\n", argv[2]);
-                    exit(1);
-                }
+                f1 = fopen(argv[2], "w"); checkFile(f1);
                 //srand((unsigned) time(&tim));
 
                 printf("Entre com os valores do arquivo: [Aperte ENTER após entrar com cada valor]\n");
@@ -100,10 +92,7 @@ int main(int argc, char *argv[]) {
                 fclose(f1);
             }
             else if(*argv[1] == b) {
-                if( (f1=fopen(argv[2], "w+b") ) == NULL) {
-                    printf("ERRO na abertura do arquivo %s!!! O arquivo está criado? \n", argv[2]);
-                    exit(1);
-                }
+                f1 = fopen(argv[2], "w+b"); checkFile(f1);
                 printf("Entre com os valores do arquivo: [Aperte ENTER após entrar com cada valor]\n");
                 n = atoi(argv[3]);
                 for(i=0; i<n; i++) {
@@ -122,18 +111,9 @@ int main(int argc, char *argv[]) {
          //Cria o arquivo TEXTO/BINARIO com nome arq3 que é o resultado da intersecção dos elementos dos arquivos BINARIOS arq1 e arq2
                 if(*argv[1] == t) {
                     if(*argv[2] == '1') {
-                        if( (f1=fopen(argv[3], "r") ) == NULL) {
-                            printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[3]);
-                            exit(1);
-                        }
-                        if( (f2=fopen(argv[4], "r") ) == NULL) {
-                            printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[4]);
-                            exit(1);
-                        }
-                        if( (ff=fopen(argv[5], "w") ) == NULL) {
-                            printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[5]);
-                            exit(1);
-                        }
+                        f1 = fopen(argv[3], "r"); checkFile(f1);
+                        f2 = fopen(argv[4], "r"); checkFile(f2);
+                        ff = fopen(argv[5], "w"); checkFile(ff);
 
                         printf("Calcular a intersecção entre dois arquivos tipo texto. \n");
 
@@ -161,18 +141,9 @@ int main(int argc, char *argv[]) {
                     }
                     else if(*argv[2] == '2') { //Cria o arquivo TEXTO com nome arq3 que é resultado da união dos elementos dos arquivos TEXTOS arq1 e arq2
 
-                        if( (f1=fopen(argv[3], "r") ) == NULL) {
-                            printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[3]);
-                            exit(1);
-                        }
-                        if( (f2=fopen(argv[4], "r") ) == NULL) {
-                            printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[4]);
-                            exit(1);
-                        }
-                        if( (ff=fopen(argv[5], "w") ) == NULL) {
-                            printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[5]);
-                            exit(1);
-                        }
+                        f1 = fopen(argv[3], "r"); checkFile(f1);
+                        f2 = fopen(argv[4], "r"); checkFile(f2);
+                        ff = fopen(argv[5], "w"); checkFile(ff);
 
                         printf("Calcular a união de %s com %s.\n", argv[3], argv[4]);
 
@@ -186,18 +157,9 @@ int main(int argc, char *argv[]) {
                     }
                     else if(*argv[2] == '3') { //Cria o arquivo TEXTO com nome arq3 que é resultado da diferença dos elementos do arquivo TEXTO arq1, menos os elementos do arquivo TEXTO arq2
 
-                        if( (f1=fopen(argv[3], "r") ) == NULL) {
-                            printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[3]);
-                            exit(1);
-                        }
-                        if( (f2=fopen(argv[4], "r") ) == NULL) {
-                            printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[4]);
-                            exit(1);
-                        }
-                        if( (ff=fopen(argv[5], "w") ) == NULL) {
-                            printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[5]);
-                            exit(1);
-                        }
+                        f1 = fopen(argv[3], "r"); checkFile(f1);
+                        f2 = fopen(argv[4], "r"); checkFile(f2);
+                        ff = fopen(argv[5], "w"); checkFile(ff);
 
                         diferenzaTXT(f1, f2, ff);
 
@@ -213,18 +175,9 @@ int main(int argc, char *argv[]) {
                 //Caso Binário: =======================================================================
                 else if(*argv[1] == b) {
                     if(*argv[2] == '1') {
-                        if( (f1=fopen(argv[3], "rb") ) == NULL) {
-                            printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[3]);
-                            exit(1);
-                        }
-                        if( (f2=fopen(argv[4], "rb") ) == NULL) {
-                            printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[4]);
-                            exit(1);
-                        }
-                        if( (ff=fopen(argv[5], "wb") ) == NULL) {
-                            printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[5]);
-                            exit(1);
-                        }
+                        f1=fopen(argv[3], "rb"); checkFile(f1);
+                        f2=fopen(argv[4], "rb"); checkFile(f2);
+                        ff=fopen(argv[5], "wb"); checkFile(ff);
 
                         printf("Calcular a intersecção entre dois arquivos tipo binário. \n");
 
@@ -268,12 +221,12 @@ int main(int argc, char *argv[]) {
                         f3 = fopen("arqAux.txt", "wb+"); checkFile(f3);
                         bubbleSort(ff);
                         rewind(ff);
-                        aux=NULL;
+                        
                         while(!feof(ff)){
                             fread(&i, sizeof(int), 1, ff);
-                            if(*aux != i){
+                            if(aux2 != i){
                                 fwrite(&i, sizeof(int), 1, f3);
-                                *aux = i;
+                                aux2 = i;
                             }
                         }
 
@@ -297,7 +250,7 @@ int main(int argc, char *argv[]) {
 
                     f1 = fopen(argv[3], "rb"); checkFile(f1);
                     f2 = fopen(argv[4], "rb"); checkFile(f2);
-                    ff = fopen(argv[5], "wb"); checkFile(ff);
+                    ff = fopen(argv[5], "wb+"); checkFile(ff);
 
                     diferenzaBIN(f1, f2, ff);
 
