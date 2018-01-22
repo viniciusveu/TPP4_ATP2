@@ -14,13 +14,14 @@ esteja ordenado e seja relativo a uma das operações abaixo:
 -união entre os dois conjuntos(2);
 -diferença A-B(3);
 -diferença B-A(3);
+
+Desenvolvido no SO Linux Ubuntu 16.04 LTS e Lubuntu 17.10.
 */
 //======================================================================================================================================================
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <locale.h>
-#include <time.h>
 
 #include "functions.c"
 #include "func_ord.c"
@@ -29,13 +30,13 @@ esteja ordenado e seja relativo a uma das operações abaixo:
 #define PULA puts("\n")
 #define TAM 1000
 
-FILE *f1, *f2, *ff, *f4;
+FILE *f1, *f2, *f3, *ff;
 
 //MAIN======================================================================================================================================================
 
 int main(int argc, char *argv[]) {
     char ch, t='t', b='b';
-    int *aux=NULL, i, j, n, x, num, n1, n2, vetor[TAM], vet1[TAM], vet2[TAM], uniao[2*TAM], aux2 = -1;
+    int *aux=NULL, x, i, j, n, num, n1, n2, vetor[TAM];
 
     time_t tim;
     setlocale(LC_ALL, "Portuguese");
@@ -135,21 +136,21 @@ int main(int argc, char *argv[]) {
                         }
 
                         printf("Calcular a intersecção entre dois arquivos tipo texto. \n");
-                        aux=NULL;
+
                         while(1) {
                             fscanf(f1, "%d", &n1);
                             if(feof(f1)) break;
-                            if(*aux != n1) {
+                            if(x != n1) {
                                 while(1) {
                                     fscanf(f2, "%d", &n2);
                                     if(feof(f2)) break;
-                                    if(n1 == n2) {
+                                    if(n1== n2) {
                                         fprintf(ff, "%d ", n1);
                                         break;
                                     }
                                 }
                             }
-                            *aux = n1;
+                            x = n1;
                             rewind(f2);
                         }
                         printf("O arquivo %s com a intersecção foi criado!\n", argv[5]);
@@ -171,12 +172,12 @@ int main(int argc, char *argv[]) {
                         if( (ff=fopen(argv[5], "w") ) == NULL) {
                             printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[5]);
                             exit(1);
-                        }  
+                        }
 
                         printf("Calcular a união de %s com %s.\n", argv[3], argv[4]);
-                        
+
                         encontraUniao(f1, f2, ff);
-                        
+
                         printf("Arquivo com a união foi criado com sucesso! :D\n");
 
                         fclose(f1);
@@ -196,9 +197,11 @@ int main(int argc, char *argv[]) {
                         if( (ff=fopen(argv[5], "w") ) == NULL) {
                             printf("ERRO na abertura do arquivo: %s!!! O arquivo está criado? \n", argv[5]);
                             exit(1);
-                        }  
-                        
+                        }
 
+                        diferenzaTXT(f1, f2, ff);
+
+                        printf("Arquivo com as diferenças criado com sucesso! :D\n");
 
                         fclose(f1);
                         fclose(f2);
@@ -224,11 +227,11 @@ int main(int argc, char *argv[]) {
                         }
 
                         printf("Calcular a intersecção entre dois arquivos tipo binário. \n");
-                        aux=NULL;
+
                         while(1) {
                             fread(&n1, sizeof(int), 1, f1);
                             if(feof(f1)) break;
-                            if(*aux != n1) {
+                            if(x != n1) {
                                 while(1) {
                                     fread(&n2, sizeof(int), 1, f2);
                                     if(feof(f2)) break;
@@ -238,7 +241,7 @@ int main(int argc, char *argv[]) {
                                     }
                                 }
                             }
-                            *aux = n1;
+                            x = n1;
                             rewind(f2);
                         }
                         printf("O arquivo %s com a intersecção foi criado!\n", argv[5]);
@@ -248,10 +251,10 @@ int main(int argc, char *argv[]) {
                         fclose(ff);
                     }
                     else if(*argv[2] == '2') { //Cria o arquivo TEXTO com nome arq3 que é resultado da união dos elementos dos arquivos TEXTOS arq1 e arq2
-                        
+
                         //união BINÁRIO
-                        f1 = fopen(argv[3], "rb"); checkFile(f1); 
-                        f2 = fopen(argv[4], "rb"); checkFile(f2); 
+                        f1 = fopen(argv[3], "rb"); checkFile(f1);
+                        f2 = fopen(argv[4], "rb"); checkFile(f2);
                         ff = fopen(argv[5], "wb"); checkFile(ff);
                         copiarArquivoBIN(f1, ff);
                         fclose(ff);
@@ -262,48 +265,48 @@ int main(int argc, char *argv[]) {
                         fclose(ff);
 
                         ff = fopen(argv[5], "rb+"); checkFile(ff);
-                        f4 = fopen("arqAux.txt", "wb+"); checkFile(f4);
+                        f3 = fopen("arqAux.txt", "wb+"); checkFile(f3);
                         bubbleSort(ff);
                         rewind(ff);
-
+                        aux=NULL;
                         while(!feof(ff)){
                             fread(&i, sizeof(int), 1, ff);
-                            if(aux2 != i){
-                                fwrite(&i, sizeof(int), 1, f4);
-                                aux2 = i;
+                            if(*aux != i){
+                                fwrite(&i, sizeof(int), 1, f3);
+                                *aux = i;
                             }
                         }
 
-                        
+
                         fclose(f1);
                         fclose(f2);
                         fclose(ff);
-                        fclose(f4);
-                        
-                        f4 = fopen("arqAux.txt", "rb"); checkFile(f4);
+                        fclose(f3);
+
+                        f3 = fopen("arqAux.txt", "rb"); checkFile(f3);
                         ff = fopen(argv[5], "wb"); checkFile(ff);
-                        copiarArquivoBIN(f4, ff);
+                        copiarArquivoBIN(f3, ff);
                         printf("O arquivo %s de União resultante foi criado com Sucesso!", argv[5]);
 
                         fclose(ff);
-                        fclose(f4);
-                        
-               
+                        fclose(f3);
 
                     }
 
                     else if(*argv[2] == '3') { //Cria o arquivo TEXTO com nome arq3 que é resultado da diferença dos elementos do arquivo TEXTO arq1, menos os elementos do arquivo TEXTO arq2
-                        f1 = fopen(argv[3], "rb"); checkFile(f1);
-                        f2 = fopen(argv[4], "rb"); checkFile(f2);
-                        ff = fopen(argv[5], "wb"); checkFile(ff);
-                        
-                        diferenzaBIN(f1, f2, ff);
 
-                        fclose(f1);
-                        fclose(f2);
-                        fclose(ff);
+                    f1 = fopen(argv[3], "rb"); checkFile(f1);
+                    f2 = fopen(argv[4], "rb"); checkFile(f2);
+                    ff = fopen(argv[5], "wb"); checkFile(ff);
 
-                        printf("ARQUIVO DIFERENÇA CRIADO COM SUCESSO!\n\n");
+                    diferenzaBIN(f1, f2, ff);
+
+                    printf("Arquivo com as diferenças foi criado! :D\n");
+
+                    fclose(f1);
+                    fclose(f2);
+                    fclose(f3);
+
                     }
                     else printf("Entre com a opção 1, 2 ou 3!\n");
                 }
@@ -317,7 +320,6 @@ int main(int argc, char *argv[]) {
 
 
     puts("\n\n");
-    //system("PAUSE");
     return 0;
 }
 
